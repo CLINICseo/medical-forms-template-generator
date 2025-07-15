@@ -1,0 +1,11 @@
+build/
+dist/
+node_modules/
+coverage/
+*.md
+.git/
+.husky/
+public/
+*.json
+package-lock.json
+yarn.lock
