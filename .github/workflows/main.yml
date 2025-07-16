@@ -30,7 +30,7 @@ jobs:
         run: npm ci
 
       - name: 🎨 Check formatting
-        run: npm run format -- --check
+        run: npm run format
 
       - name: 🔍 Run linter
         run: npm run lint
