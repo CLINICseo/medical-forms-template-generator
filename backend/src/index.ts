@@ -5,3 +5,4 @@ export const config = {
   name: 'medical-forms-backend',
   version: '1.0.0',
 };
+// Pipeline test
