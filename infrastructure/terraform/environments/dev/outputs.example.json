@@ -1,0 +1,32 @@
+{
+  "cosmos_db_connection_string": {
+    "sensitive": true,
+    "type": "string",
+    "value": "SENSITIVE_VALUE_STORED_IN_TERRAFORM_STATE"
+  },
+  "cosmos_db_endpoint": {
+    "sensitive": false,
+    "type": "string",
+    "value": "https://cosmos-medical-forms-dev.documents.azure.com:443/"
+  },
+  "document_intelligence_endpoint": {
+    "sensitive": false,
+    "type": "string",
+    "value": "https://docint-medical-forms-dev.cognitiveservices.azure.com/"
+  },
+  "key_vault_uri": {
+    "sensitive": false,
+    "type": "string",
+    "value": "https://kv-medforms-dev-cve0.vault.azure.net/"
+  },
+  "resource_group_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "rg-medical-forms-dev"
+  },
+  "storage_account_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "stmedicalformsdev7nw4"
+  }
+}

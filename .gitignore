@@ -75,4 +75,6 @@ $RECYCLE.BIN/
 
 # Temporary files
 *.tmp
-*.temp
+*.tempinfrastructure/terraform/environments/*/outputs.json
+infrastructure/terraform/*.tfstate*
+infrastructure/terraform/.terraform/
