@@ -18,15 +18,6 @@
     "outDir": "./dist",
     "rootDir": "./src"
   },
-  "include": [
-    "frontend/src/**/*",
-    "backend/**/*",
-    "shared/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-    "coverage"
-  ]
+  "include": ["frontend/src/**/*", "backend/**/*", "shared/**/*"],
+  "exclude": ["node_modules", "dist", "build", "coverage"]
 }

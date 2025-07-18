@@ -5,11 +5,13 @@
 Este proyecto usa [Conventional Commits](https://www.conventionalcommits.org/).
 
 ### Formato:
+
 <tipo>[alcance opcional]: <descripción>
 [cuerpo opcional]
 [notas al pie opcionales]
 
 ### Tipos permitidos:
+
 - **feat**: Nueva funcionalidad
 - **fix**: Corrección de error
 - **docs**: Cambios en documentación
@@ -22,6 +24,7 @@ Este proyecto usa [Conventional Commits](https://www.conventionalcommits.org/).
 - **build**: Cambios en el sistema de build
 
 ### Ejemplos:
+
 ```bash
 git commit -m "feat(auth): add user authentication"
 git commit -m "fix(api): resolve CORS issue"

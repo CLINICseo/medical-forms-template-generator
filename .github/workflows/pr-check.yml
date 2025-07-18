@@ -39,9 +39,9 @@ jobs:
           CI: true
 
       #- name: 📏 Check commit messages
-       # uses: wagoid/commitlint-github-action@v5
-        #with:
-         # configFile: .commitlintrc.json
+      # uses: wagoid/commitlint-github-action@v5
+      #with:
+      # configFile: .commitlintrc.json
 
   size-analysis:
     name: 📊 Bundle Size Analysis

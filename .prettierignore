@@ -1,11 +1,72 @@
+# Build outputs
 build/
 dist/
-node_modules/
+out/
 coverage/
-*.md
+
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Environment files
+.env*
+*.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Git
 .git/
+.gitignore
+
+# Husky
 .husky/
-public/
-*.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Package files
 package-lock.json
 yarn.lock
+pnpm-lock.yaml
+
+# Public assets (no formatear)
+public/
+*.min.js
+*.min.css
+
+# Generated files
+*.d.ts
+
+# Azure Functions
+local.settings.json
+bin/
+obj/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Documentation images
+*.png
+*.jpg
+*.gif
+*.svg
+*.ico
+
+# Markdown files with specific formatting
+CHANGELOG.md
+LICENSE

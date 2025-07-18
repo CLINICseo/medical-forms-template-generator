@@ -1,8 +1,9 @@
+# Configuración del repositorio
 repository:
   name: medical-forms-template-generator
   description: Sistema Generador de Plantillas para Formularios Médicos de Aseguradoras Mexicanas
   homepage: https://medical-forms.azurestaticapps.net
-  topics: 
+  topics:
     - medical-forms
     - azure
     - typescript
@@ -26,9 +27,9 @@ branches:
       required_status_checks:
         strict: true
         contexts:
-          - "🔍 Lint & Format Check"
-          - "🔨 Build & Test"
-          - "🔒 Security Scan"
+          - '🔍 Lint & Format Check'
+          - '🔨 Build & Test'
+          - '🔒 Security Scan'
       enforce_admins: false
       required_pull_request_reviews:
         required_approving_review_count: 1
@@ -53,12 +54,12 @@ labels:
   - name: help wanted
     color: 008672
     description: Extra attention is needed
-  - name: priority: high
+  - name: 'priority: high'
     color: ff0000
     description: High priority issue
-  - name: priority: medium
+  - name: 'priority: medium'
     color: ff8c00
     description: Medium priority issue
-  - name: priority: low
+  - name: 'priority: low'
     color: 0e8a16
-    description: Low priority issue'
+    description: Low priority issue

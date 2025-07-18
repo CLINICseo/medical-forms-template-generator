@@ -10,16 +10,10 @@
     "sourceType": "module"
   },
   "rules": {
-    "no-console": ["warn", { "allow": ["warn", "error"] }],
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "prefer-const": "error",
+    "no-var": "error"
   },
-  "ignorePatterns": ["dist/", "node_modules/"],
-  "overrides": [
-    {
-      "files": ["**/*.test.{js,ts}"],
-      "env": {
-        "jest": true
-      }
-    }
-  ]
+  "ignorePatterns": ["dist/", "node_modules/"]
 }
