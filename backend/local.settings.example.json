@@ -1,0 +1,30 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "FUNCTIONS_EXTENSION_VERSION": "~4",
+    
+    "_COMMENT_1": "=== REEMPLAZA CON TUS CREDENCIALES REALES ===",
+    
+    "_COMMENT_2": "Document Intelligence (Azure Cognitive Services)",
+    "DOCUMENT_INTELLIGENCE_ENDPOINT": "https://tu-document-intelligence.cognitiveservices.azure.com",
+    "DOCUMENT_INTELLIGENCE_KEY": "tu-document-intelligence-key-aqui",
+    
+    "_COMMENT_3": "Cosmos DB",
+    "COSMOS_DB_ENDPOINT": "https://tu-cosmos-db.documents.azure.com:443/",
+    "COSMOS_DB_KEY": "tu-cosmos-db-primary-key-aqui", 
+    "COSMOS_DB_DATABASE": "medical-forms",
+    
+    "_COMMENT_4": "Azure Storage",
+    "STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=tu-storage-account;AccountKey=tu-storage-key;EndpointSuffix=core.windows.net",
+    
+    "_COMMENT_5": "Para desarrollo y testing",
+    "NODE_ENV": "development",
+    "CORS_ORIGINS": "http://localhost:3000,https://localhost:3000"
+  },
+  "Host": {
+    "CORS": "http://localhost:3000,https://localhost:3000",
+    "CORSCredentials": true
+  }
+}

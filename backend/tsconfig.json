@@ -1,14 +1,29 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2018",
     "outDir": "dist",
-    "rootDir": ".",
+    "rootDir": "src",
     "sourceMap": true,
     "strict": false,
-    "noEmit": false
+    "noEmit": false,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["./**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src/app.ts"
+  ],
+  "exclude": [
+    "node_modules", 
+    "dist", 
+    "tests", 
+    "functions",
+    "src/functions/**/*",
+    "src/shared/**/*",
+    "src/index.ts",
+    "src/index.test.ts"
+  ]
 }
