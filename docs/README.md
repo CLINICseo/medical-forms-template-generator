@@ -39,10 +39,14 @@
 |------------|--------|---------------|
 | **Frontend React** | ✅ Funcional | [Ver estructura](./architecture/project-structure.md#frontend) |
 | **Backend Azure Functions** | ✅ Funcional | [Ver estructura](./architecture/project-structure.md#backend) |
+| **TypeScript Strict Mode** | ✅ Habilitado | Clean compilation, no errors |
+| **Seguridad** | ✅ Mejorada | 0 vulnerabilidades críticas |
+| **Linting** | ✅ Configurado | ESLint configurado, 0 errores |
 | **Document Intelligence** | ⚠️ Migración pendiente | [Ver challenges](./infraestructure/current_challenges_updated.md) |
 | **Base de Datos** | ✅ Funcional | [Ver esquemas](./api/database.md) |
 | **Despliegue** | ✅ Configurado | [Ver guía](./deployment/deployment-guide.md) |
-| **Testing** | 🔄 En desarrollo | [Ver estrategia](./development/testing.md) |
+| **Testing** | ❌ No implementado | [Ver estrategia](./development/testing.md) |
+| **Autenticación** | ❌ No implementado | Pendiente de implementación |
 
 ---
 
