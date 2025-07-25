@@ -14,16 +14,12 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src/app.ts"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules", 
     "dist", 
-    "tests", 
-    "functions",
-    "src/functions/**/*",
-    "src/shared/**/*",
-    "src/index.ts",
-    "src/index.test.ts"
+    "**/*.test.ts",
+    "**/*.spec.ts"
   ]
 }

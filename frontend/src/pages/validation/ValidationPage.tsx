@@ -12,22 +12,40 @@ import {
   Button,
   Breadcrumbs,
   Link,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
-import { Home, NavigateNext } from '@mui/icons-material';
+import { Home, NavigateNext, Analytics } from '@mui/icons-material';
 import { PDFViewer, FieldDetection } from '../../components/pdf/PDFViewer';
 import { FieldValidationPanel } from '../../components/validation/FieldValidationPanel';
+import { CapacityAnalysisViewer } from '../../components/debug/CapacityAnalysisViewer';
+import { AdvancedValidationPanel } from '../../components/validation/AdvancedValidationPanel';
+import { ValidationDebugger } from '../../components/debug/ValidationDebugger';
 import { analysisService } from '../../services/api/analysis.service';
-import { validationService } from '../../services/api/validation.service';
+import { validationService, ValidationResult } from '../../services/api/validation.service';
+import { exportService } from '../../services/api/export.service';
+import { finalizeService } from '../../services/api/finalize.service';
 
 interface DocumentData {
   documentId: string;
   fileName: string;
   documentType: string;
   insurerName: string;
-  blobUrl: string;
   detectedFields: FieldDetection[];
   status: string;
   confidence: number;
+  // 🚀 NUEVO: Métricas revolucionarias
+  modelUsed?: 'prebuilt-layout' | 'prebuilt-document' | 'fallback';
+  revolutionMetrics?: {
+    tablesDetected: number;
+    keyValuePairsDetected: number;
+    selectionMarksDetected: number;
+    paragraphsDetected: number;
+    improvementFactor: number;
+  };
+  processingTime?: number;
 }
 
 export const ValidationPage: React.FC = () => {
@@ -37,6 +55,12 @@ export const ValidationPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedFieldId, setSelectedFieldId] = useState<string | undefined>();
+  const [showCapacityAnalysis, setShowCapacityAnalysis] = useState(false);
+  const [showAdvancedValidation, setShowAdvancedValidation] = useState(false);
+  const [showValidationDebug, setShowValidationDebug] = useState(false);
+  const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
+  const [isFinalizing, setIsFinalizing] = useState(false);
 
   useEffect(() => {
     if (documentId) {
@@ -44,22 +68,58 @@ export const ValidationPage: React.FC = () => {
     }
   }, [documentId]);
 
+  const handleFieldDelete = (fieldId: string) => {
+    setDocumentData(currentData => {
+      if (!currentData) return currentData;
+
+      const updatedFields = currentData.detectedFields.filter((field) =>
+        field.fieldId !== fieldId
+      );
+
+      return {
+        ...currentData,
+        detectedFields: updatedFields,
+      };
+    });
+
+    // Clear selection if the deleted field was selected
+    setSelectedFieldId(currentSelectedId => 
+      currentSelectedId === fieldId ? undefined : currentSelectedId
+    );
+  };
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Delete key to remove selected field
+      if (event.key === 'Delete' && selectedFieldId && documentData) {
+        const selectedField = documentData.detectedFields.find(f => f.fieldId === selectedFieldId);
+        if (selectedField) {
+          event.preventDefault();
+          handleFieldDelete(selectedFieldId);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedFieldId, documentData]);
+
   const loadDocumentData = async (id: string) => {
     try {
       setLoading(true);
       setError(null);
       
-      console.log('Loading analysis for document:', id);
       
       // Get analysis data from backend
       const analysisResult = await analysisService.analyzeDocument(id);
       
-      console.log('Analysis result:', analysisResult);
       
       // Get validation data from backend
       const validationResult = await validationService.validateDocument(id);
       
-      console.log('Validation result:', validationResult);
       
       // Create document data from API responses
       const documentData: DocumentData = {
@@ -67,13 +127,17 @@ export const ValidationPage: React.FC = () => {
         fileName: `document_${id}.pdf`,
         documentType: analysisResult.formType || 'medical-form',
         insurerName: analysisResult.insurerDetected || 'Unknown',
-        blobUrl: "data:application/pdf;base64,JVBERi0xLjQKJdPr6eEKMSAwIG9iago8PAovVGl0bGUgKE1vY2sgUERGKQovQ3JlYXRvciAoTWVkaWNhbCBGb3JtcyBTeXN0ZW0pCi9Qcm9kdWNlciAoTW9jayBQREYpCi9DcmVhdGlvbkRhdGUgKEQ6MjAyNDAxMTUwMDAwMDApCj4+CmVuZG9iagoyIDAgb2JqCjw8Ci9UeXBlIC9QYWdlcwovS2lkcyBbMyAwIFJdCi9Db3VudCAxCj4+CmVuZG9iagozIDAgb2JqCjw8Ci9UeXBlIC9QYWdlCi9QYXJlbnQgMiAwIFIKL01lZGlhQm94IFswIDAgNjEyIDc5Ml0KL0NvbnRlbnRzIDQgMCBSCj4+CmVuZG9iago0IDAgb2JqCjw8Ci9MZW5ndGggNDQKPj4Kc3RyZWFtCkJUCi9GMSAxMiBUZgoxMDAgNzAwIFRkCihNb2NrIE1lZGljYWwgRm9ybSkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAxMCAwMDAwMCBuIAowMDAwMDAwMTUzIDAwMDAwIG4gCjAwMDAwMDAyMTAgMDAwMDAgbiAKMDAwMDAwMDMxNyAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjQxMQolJUVPRg==", // Mock PDF for display
         detectedFields: analysisResult.detectedFields,
         status: validationResult.status || analysisResult.status,
         confidence: analysisResult.confidence,
+        // 🚀 NUEVO: Incluir métricas revolucionarias del análisis
+        modelUsed: analysisResult.modelUsed,
+        revolutionMetrics: analysisResult.revolutionMetrics,
+        processingTime: analysisResult.processingTime,
       };
 
       setDocumentData(documentData);
+      setValidationResult(validationResult);
       setLoading(false);
     } catch (err) {
       console.error('Failed to load document data:', err);
@@ -97,6 +161,73 @@ export const ValidationPage: React.FC = () => {
       ...documentData,
       detectedFields: updatedFields,
     });
+  };
+
+
+  const handleExport = async (format: 'json' | 'xml' | 'pdf-template' = 'json') => {
+    if (!documentData) return;
+
+    try {
+      setIsExporting(true);
+      
+      await exportService.exportAndDownload({
+        documentId: documentData.documentId,
+        format,
+        fields: documentData.detectedFields,
+        includeCoordinates: true,
+        includeMedicalMetadata: true
+      });
+
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Export failed');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleFinalize = async (action: 'approve' | 'reject' | 'review', notes?: string) => {
+    if (!documentData) return;
+
+    try {
+      setIsFinalizing(true);
+
+      switch (action) {
+        case 'approve':
+          await finalizeService.approveTemplate(
+            documentData.documentId, 
+            documentData.detectedFields, 
+            notes
+          );
+          break;
+        case 'reject':
+          await finalizeService.rejectTemplate(
+            documentData.documentId, 
+            documentData.detectedFields, 
+            notes || 'Template rejected'
+          );
+          break;
+        case 'review':
+          await finalizeService.markForReview(
+            documentData.documentId, 
+            documentData.detectedFields, 
+            notes || 'Needs additional review'
+          );
+          break;
+      }
+
+      // Navigate back to dashboard with success message
+      navigate('/dashboard', { 
+        state: { 
+          message: `Template ${action === 'approve' ? 'approved' : action === 'reject' ? 'rejected' : 'marked for review'} successfully`,
+          type: 'success'
+        }
+      });
+
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Finalization failed');
+    } finally {
+      setIsFinalizing(false);
+    }
   };
 
   if (loading) {
@@ -149,11 +280,50 @@ export const ValidationPage: React.FC = () => {
           </Box>
           
           <Box sx={{ display: 'flex', gap: 1 }}>
-            <Button variant="outlined" size="small">
-              Exportar
+            {process.env.NODE_ENV === 'development' && (
+              <>
+                <Button 
+                  variant="outlined" 
+                  size="small"
+                  startIcon={<Analytics />}
+                  onClick={() => setShowCapacityAnalysis(true)}
+                >
+                  Análisis Capacidad
+                </Button>
+                <Button 
+                  variant="outlined" 
+                  size="small"
+                  color="warning"
+                  onClick={() => setShowValidationDebug(true)}
+                >
+                  Debug Validación
+                </Button>
+              </>
+            )}
+            <Button 
+              variant="outlined" 
+              size="small"
+              color="info"
+              onClick={() => setShowAdvancedValidation(true)}
+            >
+              Validación Avanzada
             </Button>
-            <Button variant="contained" color="success" size="small">
-              Finalizar Validación
+            <Button 
+              variant="outlined" 
+              size="small"
+              onClick={() => handleExport('json')}
+              disabled={isExporting}
+            >
+              {isExporting ? 'Exportando...' : 'Exportar'}
+            </Button>
+            <Button 
+              variant="contained" 
+              color="success" 
+              size="small"
+              onClick={() => handleFinalize('approve')}
+              disabled={isFinalizing}
+            >
+              {isFinalizing ? 'Finalizando...' : 'Finalizar Validación'}
             </Button>
           </Box>
         </Toolbar>
@@ -168,6 +338,11 @@ export const ValidationPage: React.FC = () => {
             </Typography>
             <Typography variant="body2" color="text.secondary">
               {documentData.insurerName} • {documentData.documentType} • {documentData.detectedFields.length} campos detectados
+              {selectedFieldId && (
+                <Box component="span" sx={{ ml: 2, px: 1, py: 0.25, backgroundColor: 'action.hover', borderRadius: 0.5, fontSize: '0.75rem' }}>
+                  Presiona DELETE para eliminar el campo seleccionado
+                </Box>
+              )}
             </Typography>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -189,10 +364,15 @@ export const ValidationPage: React.FC = () => {
           {/* PDF Viewer */}
           <Grid item xs={12} md={8} sx={{ height: '100%' }}>
             <PDFViewer
-              pdfUrl={documentData.blobUrl}
+              documentId={documentData.documentId}
               detectedFields={documentData.detectedFields}
               onFieldSelect={handleFieldSelect}
               selectedFieldId={selectedFieldId}
+              // 🚀 NUEVO: Props revolucionarias
+              modelUsed={documentData.modelUsed}
+              revolutionMetrics={documentData.revolutionMetrics}
+              processingTime={documentData.processingTime}
+              confidence={documentData.confidence}
             />
           </Grid>
           
@@ -202,11 +382,96 @@ export const ValidationPage: React.FC = () => {
               fields={documentData.detectedFields}
               onFieldSelect={handleFieldSelect}
               onFieldUpdate={handleFieldUpdate}
+              onFieldDelete={handleFieldDelete}
               selectedFieldId={selectedFieldId}
+              onApprove={() => handleFinalize('approve')}
+              onReject={() => handleFinalize('reject')}
+              onMarkForReview={() => handleFinalize('review')}
+              isProcessing={isFinalizing}
             />
           </Grid>
         </Grid>
       </Box>
+
+      {/* Capacity Analysis Dialog */}
+      <Dialog
+        open={showCapacityAnalysis}
+        onClose={() => setShowCapacityAnalysis(false)}
+        maxWidth="lg"
+        fullWidth
+      >
+        <DialogTitle>
+          Análisis Avanzado de Capacidad de Caracteres
+        </DialogTitle>
+        <DialogContent>
+          <CapacityAnalysisViewer fields={documentData.detectedFields} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowCapacityAnalysis(false)}>
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Advanced Validation Dialog */}
+      <Dialog
+        open={showAdvancedValidation}
+        onClose={() => setShowAdvancedValidation(false)}
+        maxWidth="xl"
+        fullWidth
+        PaperProps={{
+          sx: { minHeight: '90vh' }
+        }}
+      >
+        <DialogTitle>
+          Análisis de Validación Avanzado - {documentData.fileName}
+        </DialogTitle>
+        <DialogContent>
+          {validationResult && validationResult.detailedResults ? (
+            <AdvancedValidationPanel
+              validationResults={validationResult.detailedResults}
+              documentId={documentData.documentId}
+              isValid={validationResult.isValid}
+              completionPercentage={validationResult.completionPercentage}
+            />
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4 }}>
+              <Typography variant="body1" color="text.secondary">
+                Datos de validación avanzada no disponibles. 
+                {!validationResult ? ' Cargando resultados de validación...' : ' No se encontraron resultados detallados.'}
+              </Typography>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowAdvancedValidation(false)}>
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Validation Debug Dialog */}
+      <Dialog
+        open={showValidationDebug}
+        onClose={() => setShowValidationDebug(false)}
+        maxWidth="lg"
+        fullWidth
+        PaperProps={{
+          sx: { minHeight: '80vh' }
+        }}
+      >
+        <DialogTitle>
+          🔍 Debug de Validación - {documentData.fileName}
+        </DialogTitle>
+        <DialogContent>
+          <ValidationDebugger documentId={documentData.documentId} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowValidationDebug(false)}>
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

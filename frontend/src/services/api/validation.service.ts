@@ -6,6 +6,46 @@ export interface ValidationWarning {
   severity: string;
 }
 
+export interface FieldValidationResult {
+  fieldId: string;
+  fieldType: string;
+  value: string;
+  validationResults: {
+    ruleName: string;
+    result: {
+      isValid: boolean;
+      message?: string;
+      suggestion?: string;
+      confidence?: number;
+    };
+    severity: 'error' | 'warning' | 'info';
+  }[];
+  overallValid: boolean;
+  confidence: number;
+  suggestedCorrection?: string;
+}
+
+export interface FormValidationIssue {
+  type: 'missing_required' | 'invalid_combination' | 'inconsistent_data' | 'format_mismatch';
+  message: string;
+  affectedFields: string[];
+  severity: 'error' | 'warning';
+  suggestion?: string;
+}
+
+export interface DetailedValidationResults {
+  fieldResults: FieldValidationResult[];
+  formSpecificIssues: FormValidationIssue[];
+  validationSummary: {
+    totalFields: number;
+    validFields: number;
+    fieldsWithErrors: number;
+    fieldsWithWarnings: number;
+    averageConfidence: number;
+  };
+  suggestions: string[];
+}
+
 export interface ValidationResult {
   documentId: string;
   validatedAt: string;
@@ -14,6 +54,7 @@ export interface ValidationResult {
   validationWarnings: ValidationWarning[];
   completionPercentage: number;
   status: string;
+  detailedResults?: DetailedValidationResults;
   document?: any;
 }
 
@@ -25,11 +66,9 @@ export interface ValidationResponse {
 class ValidationService {
   async validateDocument(documentId: string): Promise<ValidationResult> {
     try {
-      console.log('Starting validation for document:', documentId);
 
       const response = await apiClient.get<ValidationResponse>(`/validate/${documentId}`);
       
-      console.log('Validation response:', response);
 
       if (response.success) {
         return response.data;
@@ -37,7 +76,6 @@ class ValidationService {
         throw new Error('Validation failed: Invalid response format');
       }
     } catch (error) {
-      console.error('Validation error:', error);
       if (error instanceof Error) {
         throw error;
       }
@@ -57,7 +95,6 @@ class ValidationService {
         throw new Error('Failed to update validation status');
       }
     } catch (error) {
-      console.error('Update validation error:', error);
       if (error instanceof Error) {
         throw error;
       }

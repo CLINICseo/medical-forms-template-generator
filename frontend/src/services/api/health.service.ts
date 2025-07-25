@@ -27,15 +27,12 @@ export interface HealthResponse {
 class HealthService {
   async checkHealth(): Promise<HealthStatus> {
     try {
-      console.log('Checking backend health...');
       
       const response = await apiClient.get<HealthResponse>('/health');
       
-      console.log('Health check response:', response);
       
       return response;
     } catch (error) {
-      console.error('Health check failed:', error);
       throw new Error('Backend is not responding');
     }
   }

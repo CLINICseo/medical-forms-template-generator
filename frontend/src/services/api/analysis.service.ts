@@ -25,6 +25,15 @@ export interface AnalysisResult {
   processingTime: number;
   insurerDetected: string;
   formType: string;
+  // 🚀 NUEVO: Métricas revolucionarias
+  modelUsed?: 'prebuilt-layout' | 'prebuilt-document' | 'fallback';
+  revolutionMetrics?: {
+    tablesDetected: number;
+    keyValuePairsDetected: number;
+    selectionMarksDetected: number;
+    paragraphsDetected: number;
+    improvementFactor: number;
+  };
 }
 
 export interface AnalysisResponse {
@@ -35,11 +44,9 @@ export interface AnalysisResponse {
 class AnalysisService {
   async analyzeDocument(documentId: string): Promise<AnalysisResult> {
     try {
-      console.log('Starting analysis for document:', documentId);
 
       const response = await apiClient.post<AnalysisResponse>(`/analyze/${documentId}`, {});
       
-      console.log('Analysis response:', response);
 
       if (response.success) {
         return response.data;

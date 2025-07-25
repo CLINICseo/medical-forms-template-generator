@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { documentsSlice } from './slices/documentsSlice';
 import { uiSlice } from './slices/uiSlice';
+import errorReducer from './slices/errorSlice';
 
 export const store = configureStore({
   reducer: {
     documents: documentsSlice.reducer,
     ui: uiSlice.reducer,
+    error: errorReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

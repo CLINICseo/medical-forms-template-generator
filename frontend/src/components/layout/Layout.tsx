@@ -73,7 +73,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             button
             key={item.text}
             onClick={() => handleMenuItemClick(item.path)}
-            selected={location.pathname === item.path}
+            selected={location.pathname === item.path || (item.path === '/validation' && location.pathname.startsWith('/validation'))}
             sx={{
               '&.Mui-selected': {
                 backgroundColor: 'primary.light',
@@ -93,7 +93,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   );
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
       <AppBar
         position="fixed"
         sx={{
@@ -177,17 +177,28 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
           width: { sm: `calc(100% - ${sidebarOpen ? drawerWidth : 0}px)` },
           transition: (theme) =>
             theme.transitions.create(['width'], {
               easing: theme.transitions.easing.sharp,
               duration: theme.transitions.duration.leavingScreen,
             }),
+          height: '100vh',
+          overflow: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         <Toolbar />
-        <Container maxWidth={false}>
+        <Container 
+          maxWidth={false} 
+          sx={{ 
+            flexGrow: 1, 
+            py: 3, 
+            px: 3,
+            overflow: 'auto',
+          }}
+        >
           {children}
         </Container>
       </Box>

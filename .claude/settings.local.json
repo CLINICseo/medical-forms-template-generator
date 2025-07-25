@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(timeout 10 npm start)",
+      "Bash(npm start)",
+      "Bash(node:*)",
+      "Bash(curl:*)",
+      "Bash(ls:*)",
+      "Bash(npm run start:*)",
+      "Bash(mv:*)",
+      "Bash(true)",
+      "Bash(rm:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run:*)",
+      "Bash(func start --port 7071)",
+      "Bash(mkdir:*)",
+      "Bash(move:*)",
+      "Bash(func start:*)",
+      "Bash(grep:*)",
+      "Bash(npm audit:*)",
+      "Bash(npx tsc:*)"
+    ],
+    "deny": []
+  }
+}

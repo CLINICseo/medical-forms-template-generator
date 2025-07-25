@@ -181,12 +181,12 @@ export class AuditModel {
       .query(query)
       .fetchAll();
 
-    const actionBreakdown = actionCounts.reduce((acc, item) => {
+    const actionBreakdown = actionCounts.reduce((acc, item: any) => {
       acc[item.action] = item.totalActions;
       return acc;
     }, {} as Record<string, number>);
 
-    const totalActions = Object.values(actionBreakdown).reduce((sum, count) => sum + count, 0);
+    const totalActions: number = (Object.values(actionBreakdown) as number[]).reduce((sum: number, count: number) => sum + count, 0);
 
     const recentActivity = await this.findByUser(userId, 10);
 

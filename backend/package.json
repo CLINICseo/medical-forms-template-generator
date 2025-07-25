@@ -4,15 +4,23 @@
   "description": "Azure Functions backend for Medical Forms Template Generator",
   "scripts": {
     "build": "tsc",
+    "build:production": "npm run type-check && npm run lint && npm run test && npm run build",
     "watch": "tsc -w",
     "prestart": "npm run build",
-    "start": "func start",
-    "test": "echo 'Backend tests: PASSED' && exit 0",
+    "start": "func start --port 7071",
+    "start:host": "func start --port 7071",
+    "test": "jest --passWithNoTests --detectOpenHandles",
+    "test:watch": "jest --watch --passWithNoTests",
+    "test:coverage": "jest --coverage --passWithNoTests --detectOpenHandles",
+    "test:integration": "echo 'Integration tests - TODO: implement' && exit 0",
     "lint": "eslint src --ext .ts,.js --max-warnings 0",
     "lint:fix": "eslint src --ext .ts,.js --fix",
     "format": "prettier --write \"src/**/*.{js,ts,json}\"",
     "format:check": "prettier --check \"src/**/*.{js,ts,json}\"",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "clean": "rimraf dist",
+    "validate:config": "node -e \"console.log('Azure Functions configuration validation - TODO: implement')\"",
+    "security:scan": "npm audit --audit-level moderate"
   },
   "dependencies": {
     "@azure/ai-form-recognizer": "^5.0.0",
@@ -33,6 +41,7 @@
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "jest": "^29.7.0",
+    "rimraf": "^5.0.9",
     "typescript": "^5.5.4"
   },
   "main": "dist/app.js",

@@ -1,4 +1,5 @@
 import { apiClient } from './client';
+import { ErrorHandler, ApplicationError, ErrorType } from '../../utils/errorHandler';
 
 export interface UploadDocumentParams {
   file: File;
@@ -22,18 +23,30 @@ export interface UploadResponse {
 class UploadService {
   async uploadDocument(params: UploadDocumentParams): Promise<UploadResponse['data']> {
     try {
-      console.log('Starting upload with params:', {
-        fileName: params.file.name,
-        fileSize: params.file.size,
-        documentType: params.documentType,
-        insurerName: params.insurerName
-      });
+      // Validate file size (50MB limit)
+      const maxSize = 50 * 1024 * 1024; // 50MB
+      if (params.file.size > maxSize) {
+        throw new ApplicationError(
+          ErrorType.VALIDATION_ERROR,
+          'El archivo es demasiado grande. El tamaño máximo permitido es 50MB.',
+          413,
+          { fileSize: params.file.size, maxSize }
+        );
+      }
+
+      // Validate file type
+      if (params.file.type !== 'application/pdf') {
+        throw new ApplicationError(
+          ErrorType.VALIDATION_ERROR,
+          'Tipo de archivo no válido. Solo se permiten archivos PDF.',
+          415,
+          { fileType: params.file.type }
+        );
+      }
 
       // Convert file to binary data for Azure Functions
       const fileBuffer = await this.fileToArrayBuffer(params.file);
       
-      console.log('File converted to buffer, size:', fileBuffer.byteLength);
-
       // Azure Functions expects binary data directly
       const response = await apiClient.post<UploadResponse>('/upload', fileBuffer, {
         headers: {
@@ -45,19 +58,23 @@ class UploadService {
         },
       });
 
-      console.log('Upload response:', response);
-
       if (response.success) {
         return response.data;
       } else {
-        throw new Error('Upload failed: Invalid response format');
+        throw new ApplicationError(
+          ErrorType.API_ERROR,
+          response.error?.message || 'Error al cargar el documento',
+          500
+        );
       }
     } catch (error) {
-      console.error('Upload error:', error);
-      if (error instanceof Error) {
+      // If it's already an ApplicationError, re-throw it
+      if (error instanceof ApplicationError) {
         throw error;
       }
-      throw new Error('Upload failed: Unknown error');
+      
+      // Otherwise, parse the API error
+      throw ErrorHandler.handleUploadError(error);
     }
   }
 

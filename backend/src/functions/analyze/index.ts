@@ -26,7 +26,7 @@ export async function analyzeDocument(
       };
     }
 
-    const body = await req.json();
+    const body = await req.json() as any;
     const { documentUrl, documentType = "general" } = body;
 
     // Initialize Document Intelligence client

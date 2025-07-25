@@ -6,6 +6,14 @@ export interface FieldDetection {
   boundingBox: number[];
   pageNumber: number;
   fieldType: FieldType | string;
+  // 🚀 NUEVO: Campos para migración prebuilt-layout
+  sourceType?: 'keyValuePair' | 'table' | 'checkbox' | 'paragraph' | 'custom-neural' | 'document';
+  isRevolutionary?: boolean; // Marca campos de la migración
+  // 🚀 NUEVO: Campos para Custom Neural Model
+  isValidated?: boolean;
+  insurer?: string;
+  isCritical?: boolean;
+  modelSource?: string;
 }
 
 export interface AnalysisResult {
@@ -19,6 +27,7 @@ export interface AnalysisResult {
 }
 
 export enum FieldType {
+  // Basic types
   TEXT = "text",
   DATE = "date",
   EMAIL = "email",
@@ -26,10 +35,43 @@ export enum FieldType {
   CURRENCY = "currency",
   NUMBER = "number",
   CHECKBOX = "checkbox",
-  // Mexican specific types
+  
+  // Mexican identifiers
   RFC = "rfc",
   CURP = "curp",
-  NSS = "nss"
+  NSS = "nss",
+  IMSS_NUMBER = "imss-number",
+  ISSSTE_NUMBER = "issste-number",
+  FOLIO_AFILIACION = "folio-afiliacion",
+  
+  // Medical fields
+  MEDICAL_DIAGNOSIS = "medical-diagnosis",
+  MEDICAL_PROCEDURE = "medical-procedure",
+  MEDICINE_NAME = "medicine-name",
+  MEDICAL_SPECIALTY = "medical-specialty",
+  HOSPITAL_NAME = "hospital-name",
+  DOCTOR_NAME = "doctor-name",
+  CEDULA_PROFESIONAL = "cedula-profesional",
+  
+  // Insurance fields
+  POLICY_NUMBER = "policy-number",
+  CLAIM_NUMBER = "claim-number",
+  INSURER_NAME = "insurer-name",
+  COVERAGE_TYPE = "coverage-type",
+  DEDUCTIBLE = "deductible",
+  COPAYMENT = "copayment",
+  
+  // Financial fields
+  CLABE = "clabe",
+  CREDIT_CARD = "credit-card",
+  INVOICE_FOLIO = "invoice-folio",
+  INVOICE_UUID = "invoice-uuid",
+  
+  // Location fields
+  POSTAL_CODE = "postal-code",
+  STATE = "state",
+  MUNICIPALITY = "municipality",
+  ADDRESS = "address"
 }
 
 export interface DocumentTemplate {

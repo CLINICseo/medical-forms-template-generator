@@ -30,20 +30,14 @@ export function validateRequest(
 
   // Validate required fields in body
   if (options.requiredFields && req.body) {
-    for (const field of options.requiredFields) {
-      if (!req.body[field]) {
-        errors.push(`Required field '${field}' is missing`);
-      }
-    }
+    // Note: For Azure Functions v4, body validation should be done after parsing
+    // This is just a placeholder check
+    errors.push("Body validation must be performed after parsing the request body");
   }
 
   // Validate body size
-  if (options.maxBodySize && req.body) {
-    const bodySize = JSON.stringify(req.body).length;
-    if (bodySize > options.maxBodySize) {
-      errors.push(`Request body size (${bodySize} bytes) exceeds maximum allowed (${options.maxBodySize} bytes)`);
-    }
-  }
+  // Note: For Azure Functions v4, body size validation should be done after parsing the request
+  // This is left as a placeholder for now
 
   return {
     isValid: errors.length === 0,

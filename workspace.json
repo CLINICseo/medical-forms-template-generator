@@ -1,0 +1,163 @@
+{
+  "name": "Medical Forms Template Generator",
+  "description": "Sistema de digitalización de formularios médicos mexicanos usando Azure Document Intelligence",
+  "version": "2.0.0",
+
+  // ===== 🤖 CONFIGURACIÓN CLAUDE CODE =====
+  "contextFiles": {
+    "primary": ["docs/architecture/claude-context-refactored.md"],
+    "secondary": [
+      "docs/architecture/current-challenges-detailed.md",
+      "docs/architecture/implementation-roadmap.md"
+    ],
+    "reference": [
+      "docs/architecture/form-complexity-guide.md",
+      "docs/architecture/quick-commands.md"
+    ],
+    "codebase": [
+      "backend/src/app.ts",
+      "frontend/src/pages/validation/ValidationPage.tsx",
+      "backend/src/services/documentIntelligenceService.ts"
+    ]
+  },
+
+  // ===== 📁 DIRECTORIOS DE TRABAJO =====
+  "workingDirectories": [
+    "backend/src",
+    "frontend/src",
+    "docs/architecture",
+    "backend/src/services",
+    "frontend/src/components"
+  ],
+
+  // ===== 🎯 SHORTCUTS PARA NAVEGACIÓN RÁPIDA =====
+  "shortcuts": {
+    "context": "docs/architecture/claude-context-refactored.md",
+    "challenges": "docs/architecture/current-challenges-detailed.md",
+    "roadmap": "docs/architecture/implementation-roadmap.md",
+    "commands": "docs/architecture/quick-commands.md",
+    "forms": "docs/architecture/form-complexity-guide.md",
+
+    // Tareas críticas específicas
+    "task19": "docs/architecture/current-challenges-detailed.md#tarea-19-visualización-pdf-real-crítico---p0",
+    "task20": "docs/architecture/current-challenges-detailed.md#tarea-20-coordenadas-precisas-de-document-intelligence-alta---p1",
+    "task21": "docs/architecture/current-challenges-detailed.md#tarea-21-cálculo-avanzado-de-capacidad-de-caracteres-alta---p1",
+    "task22": "docs/architecture/current-challenges-detailed.md#tarea-22-integración-real-document-intelligence-alta---p1",
+
+    // Archivos de código críticos
+    "main-backend": "backend/src/app.ts",
+    "main-frontend": "frontend/src/pages/validation/ValidationPage.tsx",
+    "pdf-viewer": "frontend/src/components/pdf/PDFViewer.tsx",
+    "di-service": "backend/src/services/documentIntelligenceService.ts"
+  },
+
+  // ===== 📋 ESTADO ACTUAL DEL PROYECTO =====
+  "projectStatus": {
+    "phase": "MVP Perfection",
+    "currentSprint": "Tareas 19-22 Críticas",
+    "nextMilestone": "PDF Real + Coordenadas Precisas",
+    "priority": "P0 - Máxima prioridad",
+    "completionTarget": "Agosto 2025"
+  },
+
+  // ===== 🏗️ ARQUITECTURA TÉCNICA =====
+  "architecture": {
+    "backend": {
+      "framework": "Azure Functions v4",
+      "language": "TypeScript",
+      "services": ["Document Intelligence", "Blob Storage", "Cosmos DB"],
+      "port": 7075
+    },
+    "frontend": {
+      "framework": "React 18 + TypeScript",
+      "ui": "Material-UI",
+      "state": "Redux Toolkit",
+      "port": 3000
+    },
+    "integration": {
+      "ai": "Azure Document Intelligence",
+      "storage": "Azure Blob Storage",
+      "database": "Cosmos DB",
+      "deployment": "Azure Static Web Apps"
+    }
+  },
+
+  // ===== 🎯 FORMULARIOS OBJETIVO =====
+  "targetForms": {
+    "level1_complex": {
+      "forms": ["AXA", "Monterrey NY Life"],
+      "characteristics": ["Tablas dinámicas", "Proveedores múltiples", "Campos condicionales"],
+      "targetAccuracy": "75%",
+      "estimatedTime": "60-120 min"
+    },
+    "level2_medium": {
+      "forms": ["INBURSA", "MAPFRE"],
+      "characteristics": ["Formularios duales", "Presupuestos detallados"],
+      "targetAccuracy": "85%",
+      "estimatedTime": "30-60 min"
+    },
+    "level3_simple": {
+      "forms": ["MetLife", "Plan Seguro", "Atlas", "Banorte", "GNP"],
+      "characteristics": ["Diseño limpio", "Campos bien espaciados"],
+      "targetAccuracy": "95%",
+      "estimatedTime": "15-30 min"
+    }
+  },
+
+  // ===== 🚀 COMANDOS RÁPIDOS =====
+  "quickCommands": {
+    "development": {
+      "start": "npm run dev",
+      "test": "npm run test:quick",
+      "deploy": "npm run deploy:dev"
+    },
+    "debugging": {
+      "form_axa": "npm run debug:form -- --type=AXA --file=sample.pdf",
+      "coordinates": "npm run debug:coordinates -- --file=sample.pdf",
+      "capacity": "npm run debug:capacity -- --file=sample.pdf"
+    },
+    "tasks": {
+      "task19": "npm run task:19:start",
+      "task20": "npm run task:20:start",
+      "task21": "npm run task:21:start",
+      "task22": "npm run task:22:start"
+    }
+  },
+
+  // ===== 📊 MÉTRICAS OBJETIVO =====
+  "targetMetrics": {
+    "performance": {
+      "level3_processing": "< 30 segundos",
+      "level2_processing": "< 60 segundos",
+      "level1_processing": "< 120 segundos",
+      "api_response": "< 500ms"
+    },
+    "accuracy": {
+      "field_detection": "> 95%",
+      "type_classification": "> 90%",
+      "capacity_calculation": "> 85%"
+    },
+    "business": {
+      "user_satisfaction": "> 4.5/5",
+      "completion_rate": "> 95%",
+      "support_tickets": "< 5/week"
+    }
+  },
+
+  // ===== 🔧 CONFIGURACIÓN DESARROLLO =====
+  "development": {
+    "autoReload": true,
+    "debugMode": true,
+    "mockDataUsage": "minimize",
+    "testDataPath": "test-data/forms/",
+    "logLevel": "verbose"
+  },
+
+  // ===== 📝 PATRONES DE COMUNICACIÓN =====
+  "communicationPatterns": {
+    "taskReference": "Siempre referenciar por número (Tarea 19, Tarea 20, etc.)",
+    "fileReference": "Usar paths relativos desde raíz del proyecto",
+    "codeStyle": "TypeScript estricto con interfaces explícitas",
+    "documentation": "Incluir comentarios explicativos para lógica compleja"
+  }
+}
