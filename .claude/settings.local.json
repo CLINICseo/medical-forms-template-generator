@@ -19,7 +19,12 @@
       "Bash(func start:*)",
       "Bash(grep:*)",
       "Bash(npm audit:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npm view:*)",
+      "Bash(npm install:*)",
+      "Bash(npm ls:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }
