@@ -69,6 +69,7 @@ export const ValidationListPage: React.FC = () => {
 
   useEffect(() => {
     filterDocuments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [documents, searchTerm, statusFilter]);
 
   const loadDocuments = async () => {

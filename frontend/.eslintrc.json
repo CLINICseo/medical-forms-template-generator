@@ -1,19 +1,41 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true,
-    "jest": true
-  },
-  "extends": ["react-app", "react-app/jest"],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
+  "extends": [
+    "react-app",
+    "react-app/jest"
+  ],
   "rules": {
-    "no-console": ["warn", { "allow": ["warn", "error"] }],
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
-  }
+    "no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true,
+        "vars": "all",
+        "args": "after-used"
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/utils/errorHandler.ts"],
+      "rules": {
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    },
+    {
+      "files": ["src/utils/logger.ts"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
 }

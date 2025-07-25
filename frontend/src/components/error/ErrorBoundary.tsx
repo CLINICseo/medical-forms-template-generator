@@ -6,6 +6,7 @@ import { ErrorHandler } from '../../utils/errorHandler';
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
+  // eslint-disable-next-line no-unused-vars
   onError?: (error: Error, errorInfo: any) => void;
 }
 
@@ -142,6 +143,7 @@ export class ErrorBoundary extends Component<Props, State> {
 export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
   fallback?: ReactNode,
+  // eslint-disable-next-line no-unused-vars
   onError?: (error: Error, errorInfo: any) => void
 ) {
   return (props: P) => (

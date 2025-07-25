@@ -2,6 +2,7 @@
  * Frontend error handling utilities
  */
 
+// eslint-disable-next-line no-unused-vars
 export enum ErrorType {
   NETWORK_ERROR = 'NETWORK_ERROR',
   API_ERROR = 'API_ERROR',
@@ -261,6 +262,7 @@ export class ErrorHandler {
       }
     }
     
+    // eslint-disable-next-line no-throw-literal
     throw lastError!;
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { addError } from '../store/slices/errorSlice';
@@ -28,7 +29,7 @@ export const useErrorHandler = () => {
   /**
    * Wrap an async function with error handling
    */
-  const handleAsync = useCallback(<T extends (...args: any[]) => Promise<any>>(
+  const handleAsync = useCallback(<T extends (..._args: any[]) => Promise<any>>(
     asyncFn: T
   ): T => {
     return (async (...args: Parameters<T>) => {
@@ -47,8 +48,8 @@ export const useErrorHandler = () => {
   const executeAsync = useCallback(async <T,>(
     operation: () => Promise<T>,
     options?: {
-      onSuccess?: (result: T) => void;
-      onError?: (error: Error) => void;
+      onSuccess?: (_result: T) => void;
+      onError?: (_error: Error) => void;
       showSuccessMessage?: string;
       retries?: number;
     }

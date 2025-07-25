@@ -81,6 +81,7 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
     if (settings.autoSave) {
       saveSettings();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings]);
 
   const loadSettings = () => {

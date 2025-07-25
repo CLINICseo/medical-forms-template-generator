@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppError, ErrorType } from '../../utils/errorHandler';
+import { AppError } from '../../utils/errorHandler';
 
 export interface ErrorNotification {
   id: string;
