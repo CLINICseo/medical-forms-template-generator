@@ -27,8 +27,8 @@ interface AnalysisResult {
   confidence: number;
   status: string;
   processingTime: number;
-  insurerDetected: string;
-  formType: string;
+  insurerDetected?: string;
+  formType?: string;
   // 🚀 NUEVO: Métricas revolucionarias
   modelUsed?: 'prebuilt-layout' | 'prebuilt-document' | 'fallback';
   revolutionMetrics?: {
@@ -434,8 +434,8 @@ startxref
               confidence: analysisResult.confidence,
               status: analysisResult.status,
               processingTime: analysisResult.processingTime,
-              insurerDetected: analysisResult.insurerDetected,
-              formType: analysisResult.formType,
+              insurerDetected: analysisResult.insurerDetected || 'unknown',
+              formType: analysisResult.formType || 'medical-form',
               modelUsed: analysisResult.modelUsed,
               revolutionMetrics: analysisResult.revolutionMetrics
             };
@@ -644,8 +644,8 @@ startxref
         confidence: analysisResult.confidence,
         status: analysisResult.status,
         processingTime: analysisResult.processingTime,
-        insurerDetected: analysisResult.insurerDetected,
-        formType: analysisResult.formType,
+        insurerDetected: analysisResult.insurerDetected || 'unknown',
+        formType: analysisResult.formType || 'medical-form',
         // 🚀 REVOLUCIONARIO: Incluir métricas de la migración
         modelUsed: analysisResult.modelUsed,
         revolutionMetrics: analysisResult.revolutionMetrics

@@ -18,6 +18,10 @@ export interface UploadResponse {
     fileSize: number;
     blobUrl?: string;
   };
+  error?: {
+    message: string;
+    code?: string;
+  };
 }
 
 class UploadService {

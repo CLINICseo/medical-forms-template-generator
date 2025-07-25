@@ -68,8 +68,8 @@ export async function analyzeDocument(
             detectedFields.push({
               ...mappedField,
               confidence: fieldValue.confidence || mappedField.confidence,
-              boundingBox: fieldValue.boundingRegions[0].polygon.map((point: any) => [point.x, point.y]).flat(),
-              pageNumber: fieldValue.boundingRegions[0].pageNumber
+              boundingBox: fieldValue.boundingRegions?.[0]?.polygon?.map((point: any) => [point.x, point.y]).flat() || [],
+              pageNumber: fieldValue.boundingRegions?.[0]?.pageNumber || 1
             });
           }
         }

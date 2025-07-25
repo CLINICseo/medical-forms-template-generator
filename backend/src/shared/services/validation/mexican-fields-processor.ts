@@ -17,7 +17,11 @@ export class MexicanFieldsProcessor {
   };
 
   // Mapeo de campos por aseguradora
-  private readonly insurerFields = {
+  private readonly insurerFields: Record<string, {
+    requiredFields: string[];
+    polizaPattern: RegExp;
+    specificFields: string[];
+  }> = {
     'axa': {
       requiredFields: ['RFC', 'CURP', 'NSS', 'NumeroCertificado'],
       polizaPattern: /^AXA\d{8}$/,
@@ -229,18 +233,19 @@ export class MexicanFieldsProcessor {
    * Valida que estén presentes todos los campos requeridos
    */
   private validateRequiredFields(fields: FieldDetection[], insurer?: string): void {
-    if (!insurer || !this.insurerFields[insurer]) return;
+    const lowerInsurer = insurer?.toLowerCase();
+    if (!lowerInsurer || !this.insurerFields[lowerInsurer]) return;
 
-    const requiredFields = this.insurerFields[insurer].requiredFields;
+    const requiredFields = this.insurerFields[lowerInsurer].requiredFields;
     const presentFields = fields.map(f => f.fieldType);
 
-    const missingFields = requiredFields.filter(required => {
+    const missingFields = requiredFields.filter((required: string) => {
       const fieldType = this.getFieldTypeFromString(required);
       return !presentFields.includes(fieldType);
     });
 
     if (missingFields.length > 0) {
-      console.log(`⚠️ Campos requeridos faltantes para ${insurer.toUpperCase()}: ${missingFields.join(', ')}`);
+      console.log(`⚠️ Campos requeridos faltantes para ${lowerInsurer.toUpperCase()}: ${missingFields.join(', ')}`);
     }
   }
 

@@ -65,7 +65,7 @@ export interface FontVariation {
 }
 
 export class CapacityCalculator {
-  private readonly STANDARD_FONT_WIDTHS = {
+  private readonly STANDARD_FONT_WIDTHS: Record<string, number> = {
     'Arial': 0.6,
     'Helvetica': 0.6,
     'Times': 0.5,
@@ -75,7 +75,7 @@ export class CapacityCalculator {
     'default': 0.55
   };
 
-  private readonly FIELD_TYPE_ADJUSTMENTS = {
+  private readonly FIELD_TYPE_ADJUSTMENTS: Record<string, number> = {
     'text': 1.0,
     'rfc': 0.9,   // RFC has fixed format, less variation
     'curp': 0.9,  // CURP has fixed format
@@ -290,7 +290,7 @@ export class CapacityCalculator {
     const fontFamily = this.detectFontFamily(field, fontAnalysis);
     
     // 2. Calculate character width based on font
-    const charWidth = fontSize * this.STANDARD_FONT_WIDTHS[fontFamily];
+    const charWidth = fontSize * (this.STANDARD_FONT_WIDTHS[fontFamily] || this.STANDARD_FONT_WIDTHS['default']);
     const lineHeight = fontSize * this.LINE_HEIGHT_MULTIPLIER;
     
     // 3. Find conflicts affecting this field

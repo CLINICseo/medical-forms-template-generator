@@ -5,7 +5,7 @@
     "outDir": "dist",
     "rootDir": "src",
     "sourceMap": true,
-    "strict": false,
+    "strict": true,
     "noEmit": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,

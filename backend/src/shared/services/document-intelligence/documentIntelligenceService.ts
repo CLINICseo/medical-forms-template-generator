@@ -38,7 +38,7 @@ export interface BoundingBox {
 }
 
 export class DocumentIntelligenceService {
-  private client: DocumentAnalysisClient;
+  private client!: DocumentAnalysisClient;
   private isConfigured: boolean = false;
   constructor() {
     const endpoint = process.env.DOCUMENT_INTELLIGENCE_ENDPOINT;
